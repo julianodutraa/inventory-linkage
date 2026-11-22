@@ -1,0 +1,4709 @@
+{
+ "instructions": "You are reconciling an infrastructure asset inventory.\nThree systems describe the same fleet: `cloud` (provider inventory), `monitor`\n(monitoring scrape targets, sometimes registered as a bare ip:port) and `cmdb`\n(hand maintained, may contain typos, underscores, upper case, long form team\nand environment names, stale IP addresses and other human errors). Each system\nlists a given asset at most once. Services are often deployed as several\nnumbered sibling instances (for example -01, -02) that share team,\nenvironment, kind, region and subnet. For each pair, decide whether record A\nand record B describe the SAME physical asset. Answer with a JSON list of\nobjects {\"id\": ..., \"same\": true|false, \"confidence\": 0..1, \"reason\": \"...\"}.",
+ "items": [
+  {
+   "id": "472ab60d19",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-auth-prod-01",
+    "ip": "10.10.212.99",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-auth-prod-01",
+    "ip": "10.10.115.173",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "3396153ead",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-auth-prod-01",
+    "ip": "10.10.212.99",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-auth-prod-01.prod.internal",
+    "ip": "10.10.115.173",
+    "env": "prod",
+    "team": "sre",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "564ec5e24a",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-warehouse-dev-03.dev.internal",
+    "ip": "10.30.169.201",
+    "env": "dev",
+    "team": "dataplat",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-warehouse-dev-03",
+    "ip": "10.30.72.134",
+    "env": "dev",
+    "team": "data-platform",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "aca20abe0d",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-notify-dev-03.dev.internal",
+    "ip": "10.30.54.82",
+    "env": "dev",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-notify-dev-3",
+    "ip": "10.30.151.196",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "94ef3a95bd",
+   "A": {
+    "source": "cloud",
+    "name": "vm-ledger-prod-03",
+    "ip": "10.10.84.176",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-ledger-prod-03.prod.internal",
+    "ip": "10.10.181.164",
+    "env": "prod",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "f0e14e9641",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-ledger-prod-1",
+    "ip": "10.10.44.18",
+    "env": "production",
+    "team": "Data Platform",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-ledger-prod-01.prod.internal",
+    "ip": "10.10.141.12",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "3986cade37",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-audit-prod-03.prod.internal",
+    "ip": "10.10.146.132",
+    "env": "prod",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-audit-prod-03",
+    "ip": "10.10.243.219",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "89d1b4a7fe",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s_features_prod_3",
+    "ip": "10.10.184.142",
+    "env": "production",
+    "team": "Observability",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-features-prod-03",
+    "ip": "10.10.87.181",
+    "env": "prod",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "c32a58545b",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s_features_prod_3",
+    "ip": "10.10.184.142",
+    "env": "production",
+    "team": "Observability",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-features-prod-03.prod.internal",
+    "ip": "10.10.87.181",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "82a5e93613",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-payments-dev-02",
+    "ip": "10.30.207.245",
+    "env": "development",
+    "team": null,
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-payments-dev-02",
+    "ip": "10.30.110.196",
+    "env": "dev",
+    "team": null,
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "ede75b1d53",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.99.129:9100",
+    "ip": "10.10.99.129",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-orders-prod-01",
+    "ip": "10.10.99.129",
+    "env": "prod",
+    "team": "data-platform",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "cf790baacf",
+   "A": {
+    "source": "monitor",
+    "name": "pg-ledger-prod-02.prod.internal",
+    "ip": "10.10.102.66",
+    "env": "prod",
+    "team": "search",
+    "kind": null,
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-ledger-prod-02",
+    "ip": "10.10.199.48",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "9b7fcccfe2",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-catalog-prod-04",
+    "ip": "10.10.67.168",
+    "env": "production",
+    "team": "Data Platform",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.67.168:9100",
+    "ip": "10.10.67.168",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "afc506abb0",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.149.191:9100",
+    "ip": "10.10.149.191",
+    "env": "prod",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-payments-prod-02",
+    "ip": "10.10.149.191",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "92edae8722",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.86.147:9100",
+    "ip": "10.10.86.147",
+    "env": "prod",
+    "team": "sre",
+    "kind": null,
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm-audit-prod-3",
+    "ip": "10.10.86.147",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "b692d2c451",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s_features_rod_2",
+    "ip": "10.10.184.126",
+    "env": "production",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-features-prod-02.prod.internal",
+    "ip": "10.10.87.180",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "1277340745",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-orders-stg-02.stg.internal",
+    "ip": "10.20.101.108",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "KFK-ORDERS-STG-2",
+    "ip": "10.20.198.100",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "444866e9a1",
+   "A": {
+    "source": "cloud",
+    "name": "vm-ingest-prod-03",
+    "ip": "10.10.56.40",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "vm",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-ingest-prod-03.prod.internal",
+    "ip": "10.10.153.136",
+    "env": "prod",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "dac9e45e1f",
+   "A": {
+    "source": "cloud",
+    "name": "pg-pricing-prod-01",
+    "ip": "10.10.60.34",
+    "env": "prod",
+    "team": null,
+    "kind": "postgres",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "PG-PRICING-PROD-01",
+    "ip": "10.10.157.102",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "6ed7c17033",
+   "A": {
+    "source": "monitor",
+    "name": "vm-warehouse-dev-02.dev.internal",
+    "ip": "10.30.96.45",
+    "env": "dev",
+    "team": "sre",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm_warehouse_dev_02",
+    "ip": "10.30.193.44",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "3d887cd46f",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.50.170:9100",
+    "ip": "10.20.50.170",
+    "env": "stg",
+    "team": "dataplat",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-invoices-stg-3",
+    "ip": "10.20.50.170",
+    "env": "staging",
+    "team": "Data Platform",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "8c3d079edb",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.50.170:9100",
+    "ip": "10.20.50.170",
+    "env": "stg",
+    "team": "dataplat",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-invoices-stg-03",
+    "ip": "10.20.50.170",
+    "env": "stg",
+    "team": "data-platform",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "72bb214575",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-audit-stg-01",
+    "ip": "10.20.38.101",
+    "env": "stg",
+    "team": null,
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "kfk-auth-stg-01.stg.internal",
+    "ip": "10.20.141.175",
+    "env": "stg",
+    "team": "search",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "b387534f35",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.48.113:9100",
+    "ip": "10.10.48.113",
+    "env": "prod",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-reports-prod-02",
+    "ip": "10.10.48.113",
+    "env": "prod",
+    "team": null,
+    "kind": "vm",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "ca9be65389",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-events-prod-03.prod.internal",
+    "ip": "10.10.104.31",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-events-prod-03",
+    "ip": "10.10.7.160",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "087dbff4d7",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-telemetry-dev-02.dev.internal",
+    "ip": "10.30.47.149",
+    "env": "dev",
+    "team": "dataplat",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk_telemetry_dev_2",
+    "ip": "10.30.144.149",
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "9f6e67fb5f",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-warehouse-prod-02",
+    "ip": "10.10.148.56",
+    "env": "production",
+    "team": "Data Platform",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-warehouse-prod-02.prod.internal",
+    "ip": "10.10.51.202",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "f1ae824288",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-warehouse-prod-02",
+    "ip": "10.10.148.56",
+    "env": "production",
+    "team": "Data Platform",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-warehouse-prod-02",
+    "ip": "10.10.51.202",
+    "env": "prod",
+    "team": "data-platform",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "420889cbb9",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-notify-stg-02.stg.internal",
+    "ip": "10.20.137.44",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-notify-stg-02",
+    "ip": "10.20.40.191",
+    "env": "stg",
+    "team": "observability",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "e89a4ecae6",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-sessions-prod-01.prod.internal",
+    "ip": "10.10.97.18",
+    "env": "prod",
+    "team": "sre",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk_sessions_prod_01",
+    "ip": "10.10.194.49",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "5eb4a174e5",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-telemetry-dev-02",
+    "ip": "10.30.47.149",
+    "env": "dev",
+    "team": "data-platform",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk_telemetry_dev_2",
+    "ip": "10.30.144.149",
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "512a9a228c",
+   "A": {
+    "source": "cloud",
+    "name": "vm-warehouse-dev-02",
+    "ip": "10.30.96.45",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "vm",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm_warehouse_dev_02",
+    "ip": "10.30.193.44",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "bc474982c4",
+   "A": {
+    "source": "cloud",
+    "name": "pg-events-stg-02",
+    "ip": "10.20.105.34",
+    "env": "stg",
+    "team": "payments-eng",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-events-stg-02.stg.internal",
+    "ip": "10.20.202.183",
+    "env": "stg",
+    "team": "pay",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "0bc9cd6931",
+   "A": {
+    "source": "cloud",
+    "name": "vm-reports-prod-01",
+    "ip": "10.10.48.112",
+    "env": "prod",
+    "team": null,
+    "kind": "vm",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm-reports-prod-1",
+    "ip": "10.10.145.204",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "bc428423d0",
+   "A": {
+    "source": "cloud",
+    "name": "vm-ledger-prod-04",
+    "ip": "10.10.84.177",
+    "env": "prod",
+    "team": null,
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM-LEDGER-PROD-04",
+    "ip": "10.10.181.240",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "f3e891d83a",
+   "A": {
+    "source": "cloud",
+    "name": "ora-routing-stg-01",
+    "ip": "10.20.59.42",
+    "env": "stg",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.20.59.42:9100",
+    "ip": "10.20.59.42",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "b142e0d96a",
+   "A": {
+    "source": "cloud",
+    "name": "ora-telemetry-prod-01",
+    "ip": "10.10.27.70",
+    "env": "prod",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora_telemetry_prod_01",
+    "ip": "10.10.124.226",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "33e8234110",
+   "A": {
+    "source": "cloud",
+    "name": "vm-audit-prod-02",
+    "ip": "10.10.86.146",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-auth-prod-02.prod.internal",
+    "ip": "10.10.137.102",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "7c03abea86",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-ledger-dev-02.dev.internal",
+    "ip": "10.30.94.188",
+    "env": "dev",
+    "team": "dataplat",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk_ledger_dev_02",
+    "ip": "10.30.191.159",
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "kafka",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "338283812c",
+   "A": {
+    "source": "cmdb",
+    "name": "pg_catalog_prod_02",
+    "ip": "10.10.37.123",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-catalog-prod-02.prod.internal",
+    "ip": "10.10.134.75",
+    "env": "prod",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "a9ff9f655e",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk_auth_stg_01",
+    "ip": null,
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "kafka",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "kfk-auth-stg-01.stg.internal",
+    "ip": "10.20.141.175",
+    "env": "stg",
+    "team": "search",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "8ec0d11ea3",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk_auth_stg_01",
+    "ip": null,
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "kafka",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-auth-stg-01",
+    "ip": "10.20.141.175",
+    "env": "stg",
+    "team": "search-infra",
+    "kind": "kafka",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "6c5ce79be2",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-features-stg-04",
+    "ip": "10.20.61.64",
+    "env": "stg",
+    "team": "sre-core",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk-features-stg-04",
+    "ip": "10.20.158.127",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "c539924b3f",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-features-stg-04",
+    "ip": "10.20.61.64",
+    "env": "stg",
+    "team": "sre-core",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "kfk-features-stg-04.stg.internal",
+    "ip": "10.20.158.127",
+    "env": "stg",
+    "team": null,
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "96173ad128",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-billing-prod-03.prod.internal",
+    "ip": "10.10.78.60",
+    "env": "prod",
+    "team": "pay",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-billing-prod-03",
+    "ip": "10.10.175.45",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "e429a01264",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-billing-stg-02.stg.internal",
+    "ip": "10.20.216.102",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-billing-stg-02",
+    "ip": "10.20.119.189",
+    "env": "stg",
+    "team": "observability",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "0d4a5f0843",
+   "A": {
+    "source": "monitor",
+    "name": "ora-metrics-prod-01.prod.internal",
+    "ip": "10.10.206.169",
+    "env": "prod",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-metrics-prod-01",
+    "ip": "10.10.109.98",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "299ac41f2c",
+   "A": {
+    "source": "cmdb",
+    "name": "ora_events_stg_02",
+    "ip": "10.20.154.243",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-events-stg-02",
+    "ip": "10.20.57.45",
+    "env": "stg",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "0d36057a39",
+   "A": {
+    "source": "cmdb",
+    "name": "ora_events_stg_02",
+    "ip": "10.20.154.243",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-events-stg-02.stg.internal",
+    "ip": "10.20.57.45",
+    "env": "stg",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "325e401874",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.59.42:9100",
+    "ip": "10.20.59.42",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora_routing_stg_02",
+    "ip": "10.20.59.42",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "7a3facebd2",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-ingest-dev-2",
+    "ip": "10.30.113.130",
+    "env": "development",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-ingest-dev-02.dev.internal",
+    "ip": "10.30.16.82",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "63d54623c7",
+   "A": {
+    "source": "cloud",
+    "name": "ora-search-stg-01",
+    "ip": "10.20.58.95",
+    "env": "stg",
+    "team": null,
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-search-stg-01.stg.internal",
+    "ip": "10.20.155.101",
+    "env": "stg",
+    "team": "search",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "9ea02bdb1c",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-metrics-dev-01",
+    "ip": "10.30.64.111",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "kfk-metrics-dev-01.dev.internal",
+    "ip": "10.30.161.222",
+    "env": "dev",
+    "team": "sre",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "ff7cd3e3a8",
+   "A": {
+    "source": "cmdb",
+    "name": "vm_routing_dev_01",
+    "ip": "10.30.225.221",
+    "env": "development",
+    "team": "Search Infrastructure",
+    "kind": "vm",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-routing-dev-01",
+    "ip": "10.30.128.182",
+    "env": "dev",
+    "team": "search-infra",
+    "kind": "vm",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "7e5ad12ad1",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-billing-dev-02.dev.internal",
+    "ip": "10.30.74.76",
+    "env": "dev",
+    "team": "search",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "K8S-BILLING-DEV-2",
+    "ip": "10.30.171.213",
+    "env": "development",
+    "team": "Search Infrastructure",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "7e1e2a24c4",
+   "A": {
+    "source": "monitor",
+    "name": "pg-notify-stg-01.stg.internal",
+    "ip": "10.20.209.17",
+    "env": "stg",
+    "team": "pay",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-notify-stg-01",
+    "ip": "10.20.112.120",
+    "env": "stg",
+    "team": "payments-eng",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "6608c7d4c7",
+   "A": {
+    "source": "monitor",
+    "name": "pg-notify-stg-01.stg.internal",
+    "ip": "10.20.209.17",
+    "env": "stg",
+    "team": "pay",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-notify-stg-01",
+    "ip": "10.20.112.120",
+    "env": "staging",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "ff22b93caf",
+   "A": {
+    "source": "cloud",
+    "name": "vm-ledger-dev-01",
+    "ip": "10.30.46.20",
+    "env": "dev",
+    "team": null,
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.46.20:9100",
+    "ip": "10.30.46.20",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "9917e56b14",
+   "A": {
+    "source": "monitor",
+    "name": "10.30.110.196:9100",
+    "ip": "10.30.110.196",
+    "env": "dev",
+    "team": "search",
+    "kind": null,
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-payments-dev-02",
+    "ip": "10.30.110.196",
+    "env": "dev",
+    "team": null,
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "5f1c95826c",
+   "A": {
+    "source": "cloud",
+    "name": "vm-routing-dev-01",
+    "ip": "10.30.128.182",
+    "env": "dev",
+    "team": "search-infra",
+    "kind": "vm",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.128.182:9100",
+    "ip": "10.30.128.182",
+    "env": "dev",
+    "team": "search",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "0cbb7da7cf",
+   "A": {
+    "source": "monitor",
+    "name": "vm-auth-stg-01.stg.internal",
+    "ip": "10.20.20.80",
+    "env": "stg",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM_AUTH_STG_1",
+    "ip": null,
+    "env": "staging",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "44aa8320f8",
+   "A": {
+    "source": "monitor",
+    "name": "ora-notify-prod-01.prod.internal",
+    "ip": "10.10.124.53",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-notify-prod-01",
+    "ip": "10.10.221.177",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "5764ddf658",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.5.114:9100",
+    "ip": "10.10.5.114",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-sessions-prod-01",
+    "ip": "10.10.5.114",
+    "env": "prod",
+    "team": null,
+    "kind": "oracle",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "c2cbed4c3a",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-pricing-stg-02",
+    "ip": "10.20.125.19",
+    "env": "staging",
+    "team": "Payments Engineering",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "kfk-pricing-stg-02.stg.internal",
+    "ip": "10.20.222.48",
+    "env": "stg",
+    "team": "pay",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "0d99b404ac",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-pricing-stg-02.stg.internal",
+    "ip": "10.20.130.110",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-pricing-stg-02",
+    "ip": "10.20.33.157",
+    "env": "stg",
+    "team": "observability",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "2b74cf8cd4",
+   "A": {
+    "source": "cloud",
+    "name": "pg-billing-stg-01",
+    "ip": "10.20.36.88",
+    "env": "stg",
+    "team": "data-platform",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-billing-stg-1",
+    "ip": "10.20.133.83",
+    "env": "staging",
+    "team": "Data Platform",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "b1a513a358",
+   "A": {
+    "source": "cloud",
+    "name": "vm-auth-stg-01",
+    "ip": "10.20.20.80",
+    "env": "stg",
+    "team": "payments-eng",
+    "kind": "vm",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM_AUTH_STG_1",
+    "ip": null,
+    "env": "staging",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "5f8ba5bf24",
+   "A": {
+    "source": "monitor",
+    "name": "vm-reports-stg-02.stg.internal",
+    "ip": "10.20.122.87",
+    "env": "stg",
+    "team": null,
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-reports-stg-02",
+    "ip": "10.20.25.127",
+    "env": "stg",
+    "team": "payments-eng",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "a4186019e8",
+   "A": {
+    "source": "cmdb",
+    "name": "K8S-CTALOG-DEV-03",
+    "ip": null,
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-catalog-dev-03",
+    "ip": "10.30.19.26",
+    "env": "dev",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "edcfcaf674",
+   "A": {
+    "source": "cmdb",
+    "name": "K8S-CTALOG-DEV-03",
+    "ip": null,
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-search-dev-03",
+    "ip": "10.30.39.172",
+    "env": "dev",
+    "team": "data-platform",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "5f691a3ebf",
+   "A": {
+    "source": "cmdb",
+    "name": "K8S-CTALOG-DEV-03",
+    "ip": null,
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-catalog-dev-03.dev.internal",
+    "ip": "10.30.19.26",
+    "env": "dev",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "f968f05e79",
+   "A": {
+    "source": "cloud",
+    "name": "pg-reports-stg-03",
+    "ip": "10.20.135.162",
+    "env": "stg",
+    "team": "observability",
+    "kind": "postgres",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-reports-stg-03.stg.internal",
+    "ip": "10.20.232.82",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "1afab4f98d",
+   "A": {
+    "source": "cmdb",
+    "name": "vm_pricing_stg_01",
+    "ip": "10.20.200.130",
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "vm",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-pricing-stg-01",
+    "ip": "10.20.103.154",
+    "env": "stg",
+    "team": null,
+    "kind": "vm",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "98a8802547",
+   "A": {
+    "source": "cloud",
+    "name": "pg-payments-prod-02",
+    "ip": "10.10.108.32",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg_payments_prod_2",
+    "ip": "10.10.205.91",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "35242f92a7",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-notify-stg-02",
+    "ip": "10.20.137.44",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-notify-stg-02",
+    "ip": "10.20.40.191",
+    "env": "stg",
+    "team": "observability",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "fc903e95b0",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-notify-prod-01",
+    "ip": "10.10.140.44",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "kfk-notify-prod-01.prod.internal",
+    "ip": "10.10.237.192",
+    "env": "prod",
+    "team": "sre",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "3fe3dd4b4f",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-notify-prod-01",
+    "ip": "10.10.140.44",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk-notify-prod-01",
+    "ip": "10.10.237.192",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "6c32a91725",
+   "A": {
+    "source": "monitor",
+    "name": "10.30.9.53:9100",
+    "ip": "10.30.9.53",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-notify-dev-02",
+    "ip": "10.30.9.53",
+    "env": "dev",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "54d3f52b31",
+   "A": {
+    "source": "monitor",
+    "name": "10.30.9.53:9100",
+    "ip": "10.30.9.53",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ORA-NOTIFY-DEV-02",
+    "ip": "10.30.9.53",
+    "env": "development",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "c50b3ffb93",
+   "A": {
+    "source": "cloud",
+    "name": "vm-audit-prod-01",
+    "ip": "10.10.86.145",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-auth-prod-01.prod.internal",
+    "ip": "10.10.137.101",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "fe78b0980a",
+   "A": {
+    "source": "cmdb",
+    "name": "K8S-ETRICS-PROD-02",
+    "ip": "10.10.8.156",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-metrics-prod-02.prod.internal",
+    "ip": "10.10.105.102",
+    "env": "prod",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "9707fa924b",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.146.130:9100",
+    "ip": "10.10.146.130",
+    "env": "prod",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-audit-prod-01",
+    "ip": "10.10.146.130",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "60dde703bd",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-notify-stg-04.stg.internal",
+    "ip": "10.20.40.193",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk-notify-stg-4",
+    "ip": "10.20.137.248",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "42a23fe3a5",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-audit-stg-02",
+    "ip": "10.20.126.179",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-audit-stg-02",
+    "ip": "10.20.29.77",
+    "env": "stg",
+    "team": "observability",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "e2db7f4d79",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-audit-stg-02",
+    "ip": "10.20.126.179",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-audit-stg-02.stg.internal",
+    "ip": "10.20.29.77",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "7743dd55c8",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-ingest-prod-01",
+    "ip": "10.10.160.198",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-ingest-prod-01.prod.internal",
+    "ip": "10.10.63.92",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "e62cb7455e",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-ingest-prod-01",
+    "ip": "10.10.160.198",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-ingest-prod-01",
+    "ip": "10.10.63.92",
+    "env": "prod",
+    "team": null,
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "65b54a664d",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-catalog-prod-01",
+    "ip": "10.10.67.165",
+    "env": "prod",
+    "team": "data-platform",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-catalog-prod-01",
+    "ip": "10.10.164.27",
+    "env": "production",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "ebedf519a7",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-payments-dev-04.dev.internal",
+    "ip": "10.30.197.198",
+    "env": "dev",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-payments-dev-04",
+    "ip": "10.30.100.77",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "4649c6733e",
+   "A": {
+    "source": "cmdb",
+    "name": "vm-ledger-prod-02",
+    "ip": "10.10.181.176",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-ledger-prod-02",
+    "ip": "10.10.84.175",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "af70be7b0a",
+   "A": {
+    "source": "cmdb",
+    "name": "vm-ledger-prod-02",
+    "ip": "10.10.181.176",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-ledger-prod-02.prod.internal",
+    "ip": "10.10.84.175",
+    "env": "prod",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "0f26df99ac",
+   "A": {
+    "source": "monitor",
+    "name": "vm-ingest-stg-01.stg.internal",
+    "ip": "10.20.235.178",
+    "env": "stg",
+    "team": null,
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-ingest-stg-01",
+    "ip": "10.20.138.143",
+    "env": "stg",
+    "team": "search-infra",
+    "kind": "vm",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "4a693addf7",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.82.41:9100",
+    "ip": "10.10.82.41",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-reports-prod-01",
+    "ip": "10.10.82.41",
+    "env": "prod",
+    "team": "data-platform",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "9eacbce83b",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-warehouse-dev-02",
+    "ip": "10.30.72.133",
+    "env": "dev",
+    "team": "data-platform",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.72.133:9100",
+    "ip": "10.30.72.133",
+    "env": "dev",
+    "team": "dataplat",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "08a0308629",
+   "A": {
+    "source": "monitor",
+    "name": "vm-ledger-prod-03.prod.internal",
+    "ip": "10.10.181.164",
+    "env": "prod",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm-ledger-prod-03",
+    "ip": "10.10.84.176",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "4c947a52d8",
+   "A": {
+    "source": "cloud",
+    "name": "pg-search-dev-01",
+    "ip": "10.30.76.47",
+    "env": "dev",
+    "team": null,
+    "kind": "postgres",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "PG-SEARCH-DEV-01",
+    "ip": "10.30.173.246",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "e16b82f9f1",
+   "A": {
+    "source": "cmdb",
+    "name": "vm-telemetry-prod-1",
+    "ip": "10.10.127.91",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-telemetry-prod-01.prod.internal",
+    "ip": "10.10.30.63",
+    "env": "prod",
+    "team": "sre",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "003b20971c",
+   "A": {
+    "source": "cmdb",
+    "name": "vm-telemetry-prod-1",
+    "ip": "10.10.127.91",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-telemetry-prod-01",
+    "ip": "10.10.30.63",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "vm",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "f2ad1720be",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-features-stg-02",
+    "ip": "10.20.61.62",
+    "env": "stg",
+    "team": null,
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "KFK-FEATURS-STG-02",
+    "ip": "10.20.158.79",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "a65116406a",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-invoices-stg-2",
+    "ip": "10.20.172.87",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-invoices-stg-02",
+    "ip": "10.20.75.164",
+    "env": "stg",
+    "team": "observability",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "5fa09bd359",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-audit-prod-03",
+    "ip": "10.10.146.132",
+    "env": "prod",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-audit-prod-03",
+    "ip": "10.10.243.219",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "516e4f8c08",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-pricing-stg-04",
+    "ip": "10.20.33.159",
+    "env": "stg",
+    "team": "observability",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.20.33.159:9100",
+    "ip": "10.20.33.159",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "234164e5b7",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-features-stg-02.stg.internal",
+    "ip": "10.20.61.62",
+    "env": "stg",
+    "team": "sre",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "KFK-FEATURS-STG-02",
+    "ip": "10.20.158.79",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "bb1d48a708",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-search-prod-01",
+    "ip": "10.10.120.240",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-search-prod-01",
+    "ip": "10.10.23.70",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "0f42821454",
+   "A": {
+    "source": "monitor",
+    "name": "pg-payments-prod-02.prod.internal",
+    "ip": "10.10.108.32",
+    "env": "prod",
+    "team": "pay",
+    "kind": null,
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg_payments_prod_2",
+    "ip": "10.10.205.91",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "3e491f9f31",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk_events_prod_01",
+    "ip": "10.10.104.65",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-events-prod-01",
+    "ip": "10.10.7.158",
+    "env": "prod",
+    "team": "search-infra",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "f693b4d288",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-catalog-prod-01",
+    "ip": "10.10.164.27",
+    "env": "production",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-catalog-prod-01.prod.internal",
+    "ip": "10.10.67.165",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "360a3c7e69",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-payments-prod-01",
+    "ip": "10.10.205.224",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-payments-prod-01",
+    "ip": "10.10.108.31",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "245a8f1d53",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-payments-prod-01",
+    "ip": "10.10.205.224",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-payments-prod-01.prod.internal",
+    "ip": "10.10.108.31",
+    "env": "prod",
+    "team": null,
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "cae5c5cd89",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.33.159:9100",
+    "ip": "10.20.33.159",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "K8S-PRICING-STG-4",
+    "ip": "10.20.33.159",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "1d2bf8b3e0",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-notify-prod-01",
+    "ip": "10.10.221.177",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-notify-prod-01",
+    "ip": "10.10.124.53",
+    "env": "prod",
+    "team": null,
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "8796b2b2a5",
+   "A": {
+    "source": "cloud",
+    "name": "vm-audit-prod-04",
+    "ip": "10.10.86.148",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-audit-prod-04.prod.internal",
+    "ip": "10.10.183.30",
+    "env": "prod",
+    "team": "sre",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "ecd85c027b",
+   "A": {
+    "source": "cmdb",
+    "name": "vm-reports-prod-1",
+    "ip": "10.10.145.204",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-reports-prod-01.prod.internal",
+    "ip": "10.10.48.112",
+    "env": "prod",
+    "team": "pay",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "da013a3cef",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-notify-stg-04",
+    "ip": "10.20.40.193",
+    "env": "stg",
+    "team": "observability",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk-notify-stg-4",
+    "ip": "10.20.137.248",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "10ddc02ae4",
+   "A": {
+    "source": "cmdb",
+    "name": "PG-AUTH-DEV-4",
+    "ip": "10.30.185.205",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-auth-dev-04.dev.internal",
+    "ip": "10.30.88.122",
+    "env": "dev",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "488d380785",
+   "A": {
+    "source": "cmdb",
+    "name": "PG-AUTH-DEV-4",
+    "ip": "10.30.185.205",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-auth-dev-04",
+    "ip": "10.30.88.122",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "f619aead2f",
+   "A": {
+    "source": "monitor",
+    "name": "ora-notify-prod-02.prod.internal",
+    "ip": "10.10.221.35",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-notify-prod-02",
+    "ip": "10.10.124.54",
+    "env": "prod",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "74b98f4433",
+   "A": {
+    "source": "monitor",
+    "name": "ora-notify-prod-02.prod.internal",
+    "ip": "10.10.221.35",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-notfiy-prod-2",
+    "ip": "10.10.124.54",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "e893a695f0",
+   "A": {
+    "source": "cloud",
+    "name": "ora-reports-stg-01",
+    "ip": "10.20.136.142",
+    "env": "stg",
+    "team": "data-platform",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-reporte-stg-1",
+    "ip": "10.20.233.180",
+    "env": "staging",
+    "team": "Data Platform",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "b078853f03",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.50.169:9100",
+    "ip": "10.20.50.169",
+    "env": "stg",
+    "team": "dataplat",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora_invoices_stg_2",
+    "ip": "10.20.50.169",
+    "env": "staging",
+    "team": "Data Platform",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "ca4925f69b",
+   "A": {
+    "source": "monitor",
+    "name": "kfk-pricing-stg-02.stg.internal",
+    "ip": "10.20.222.48",
+    "env": "stg",
+    "team": "pay",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-pricing-stg-02",
+    "ip": "10.20.125.19",
+    "env": "stg",
+    "team": null,
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "15d91c4619",
+   "A": {
+    "source": "monitor",
+    "name": "ora-auth-prod-02.prod.internal",
+    "ip": "10.10.115.174",
+    "env": "prod",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ORA-AUTH-PROD-02",
+    "ip": "10.10.212.154",
+    "env": "production",
+    "team": null,
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "8c77d5bb9a",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-orders-stg-02",
+    "ip": "10.20.101.108",
+    "env": "stg",
+    "team": "observability",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "KFK-ORDERS-STG-2",
+    "ip": "10.20.198.100",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "dfa16082f9",
+   "A": {
+    "source": "cloud",
+    "name": "ora-features-prod-04",
+    "ip": "10.10.89.141",
+    "env": "prod",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ORA_FEATURES_PROD_04",
+    "ip": "10.10.186.39",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "c0d0ed79f1",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-events-prod-1",
+    "ip": "10.10.149.173",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-events-prod-01",
+    "ip": "10.10.52.123",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "f89f63f463",
+   "A": {
+    "source": "cloud",
+    "name": "ora-search-stg-02",
+    "ip": "10.20.58.96",
+    "env": "stg",
+    "team": "search-infra",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-saerch-stg-2",
+    "ip": "10.20.155.199",
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "efa1c544a6",
+   "A": {
+    "source": "cmdb",
+    "name": "VM-REPORTS-PROD-2",
+    "ip": null,
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-reports-prod-02",
+    "ip": "10.10.48.113",
+    "env": "prod",
+    "team": null,
+    "kind": "vm",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "ae9fce7e5e",
+   "A": {
+    "source": "cloud",
+    "name": "vm-ingest-stg-01",
+    "ip": "10.20.138.143",
+    "env": "stg",
+    "team": "search-infra",
+    "kind": "vm",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm-ingets-stg-1",
+    "ip": "10.20.235.178",
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "11a798467e",
+   "A": {
+    "source": "cmdb",
+    "name": "VM_EVENTS_PROD_02",
+    "ip": "10.10.224.59",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-events-prod-02",
+    "ip": "10.10.127.16",
+    "env": "prod",
+    "team": "search-infra",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "94d2b89ebf",
+   "A": {
+    "source": "monitor",
+    "name": "ora-reports-prod-01.prod.internal",
+    "ip": "10.10.79.62",
+    "env": "prod",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-reports-prod-01",
+    "ip": null,
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "7dc5fde70c",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-warehouse-prod-03",
+    "ip": "10.10.24.39",
+    "env": "production",
+    "team": "Observability",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.24.39:9100",
+    "ip": "10.10.24.39",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "4a3eb5d08b",
+   "A": {
+    "source": "monitor",
+    "name": "ora-notify-stg-03.stg.internal",
+    "ip": "10.20.148.41",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora_otify_stg_03",
+    "ip": null,
+    "env": "staging",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "c82b0c3edd",
+   "A": {
+    "source": "cmdb",
+    "name": "ORA-PRICING-DEV-1",
+    "ip": "10.30.73.85",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.73.85:9100",
+    "ip": "10.30.73.85",
+    "env": "dev",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "cd71cf68b3",
+   "A": {
+    "source": "cloud",
+    "name": "ora-invoices-dev-01",
+    "ip": "10.30.90.94",
+    "env": "dev",
+    "team": "data-platform",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ORA-INVOICES-DEV-01",
+    "ip": null,
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "d80eef2a33",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.24.41:9100",
+    "ip": "10.10.24.41",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-warehouse-prod-04",
+    "ip": "10.10.24.41",
+    "env": "prod",
+    "team": "observability",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "aea16bc5be",
+   "A": {
+    "source": "cmdb",
+    "name": "ORA-TELEMETRY-STG-1",
+    "ip": "10.20.239.125",
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-telemetry-stg-01",
+    "ip": "10.20.142.149",
+    "env": "stg",
+    "team": null,
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "211c729fa7",
+   "A": {
+    "source": "cmdb",
+    "name": "ORA-TELEMETRY-STG-1",
+    "ip": "10.20.239.125",
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-telemetry-stg-01.stg.internal",
+    "ip": "10.20.142.149",
+    "env": "stg",
+    "team": "search",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "9f0d373b23",
+   "A": {
+    "source": "cmdb",
+    "name": "or_metrics_prod_01",
+    "ip": "10.10.206.169",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-metrics-prod-01",
+    "ip": "10.10.109.98",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "b95a099247",
+   "A": {
+    "source": "monitor",
+    "name": "ora-sessions-stg-01.stg.internal",
+    "ip": "10.20.241.234",
+    "env": "stg",
+    "team": null,
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora_sessions_stg_1",
+    "ip": "10.20.144.82",
+    "env": "staging",
+    "team": "Search Infrastructure",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "cd0725edfe",
+   "A": {
+    "source": "monitor",
+    "name": "ora-sessions-stg-01.stg.internal",
+    "ip": "10.20.241.234",
+    "env": "stg",
+    "team": null,
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-sessions-stg-01",
+    "ip": "10.20.144.82",
+    "env": "stg",
+    "team": "search-infra",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "995d0a9cdd",
+   "A": {
+    "source": "cmdb",
+    "name": "ora_telemetry_prod_01",
+    "ip": "10.10.124.226",
+    "env": "production",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-telemetry-prod-01.prod.internal",
+    "ip": "10.10.27.70",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "86262cec9e",
+   "A": {
+    "source": "cmdb",
+    "name": "ora_otify_stg_03",
+    "ip": null,
+    "env": "staging",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-routing-stg-03",
+    "ip": "10.20.59.44",
+    "env": "stg",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "ea568f425d",
+   "A": {
+    "source": "cmdb",
+    "name": "ora_otify_stg_03",
+    "ip": null,
+    "env": "staging",
+    "team": "Observability",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-notify-stg-03",
+    "ip": "10.20.148.41",
+    "env": "stg",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "61bbc7420a",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-ledger-prod-01",
+    "ip": "10.10.44.17",
+    "env": "production",
+    "team": "Data Platform",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-ledger-prod-01.prod.internal",
+    "ip": "10.10.141.12",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "97ceadd7e9",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-notify-dev-03",
+    "ip": "10.30.54.82",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-notify-dev-3",
+    "ip": "10.30.151.196",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "89f3d8d736",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-events-prod-02",
+    "ip": "10.10.7.159",
+    "env": "prod",
+    "team": "search-infra",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "kfk-events-prod-02",
+    "ip": null,
+    "env": "production",
+    "team": null,
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "fc595c524e",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-search-dev-01",
+    "ip": "10.30.39.170",
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-search-dev-01.dev.internal",
+    "ip": "10.30.136.28",
+    "env": "dev",
+    "team": null,
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "10ee878753",
+   "A": {
+    "source": "cloud",
+    "name": "ora-auth-prod-02",
+    "ip": "10.10.115.174",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ORA-AUTH-PROD-02",
+    "ip": "10.10.212.154",
+    "env": "production",
+    "team": null,
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "2fe5e99c77",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-payments-prod-01",
+    "ip": "10.10.93.75",
+    "env": "prod",
+    "team": "search-infra",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-payments-prod-01",
+    "ip": "10.10.190.110",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "89a079b851",
+   "A": {
+    "source": "cloud",
+    "name": "ora-pricing-dev-01",
+    "ip": "10.30.73.85",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.73.85:9100",
+    "ip": "10.30.73.85",
+    "env": "dev",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "658e272174",
+   "A": {
+    "source": "cloud",
+    "name": "pg-auth-prod-01",
+    "ip": "10.10.147.125",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-auht-prod-01",
+    "ip": "10.10.244.167",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "b183182e4b",
+   "A": {
+    "source": "monitor",
+    "name": "ora-ingest-dev-01.dev.internal",
+    "ip": "10.30.16.81",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-ingest-dev-01",
+    "ip": "10.30.113.14",
+    "env": "development",
+    "team": null,
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "1b6b5e00d5",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-warehouse-stg-02",
+    "ip": "10.20.55.112",
+    "env": "stg",
+    "team": "data-platform",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-warehouse-stg-02.stg.internal",
+    "ip": "10.20.152.248",
+    "env": "stg",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "0906924095",
+   "A": {
+    "source": "cmdb",
+    "name": "vm_audit_prod_01",
+    "ip": "10.10.86.145",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-auth-prod-01.prod.internal",
+    "ip": "10.10.137.101",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "73b1c54f73",
+   "A": {
+    "source": "cloud",
+    "name": "ora-reports-prod-01",
+    "ip": "10.10.79.62",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-reports-prod-01",
+    "ip": null,
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "10c6a07eb7",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-reporte-stg-1",
+    "ip": "10.20.233.180",
+    "env": "staging",
+    "team": "Data Platform",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-reports-stg-01.stg.internal",
+    "ip": "10.20.136.142",
+    "env": "stg",
+    "team": "dataplat",
+    "kind": "oracle",
+    "region": null
+   }
+  },
+  {
+   "id": "b070025e1d",
+   "A": {
+    "source": "cloud",
+    "name": "pg-events-dev-01",
+    "ip": "10.30.130.50",
+    "env": "dev",
+    "team": "payments-eng",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg_events_dev_01",
+    "ip": "10.30.227.181",
+    "env": "development",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "7826255ac3",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-billing-stg-02",
+    "ip": "10.20.119.189",
+    "env": "stg",
+    "team": "observability",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-iblling-stg-02",
+    "ip": "10.20.216.102",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "48364c8741",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-warehouso-prod-1",
+    "ip": "10.10.121.20",
+    "env": "production",
+    "team": "Observability",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-warehouse-prod-01",
+    "ip": "10.10.24.38",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "a0f4b9f809",
+   "A": {
+    "source": "monitor",
+    "name": "10.30.17.150:9100",
+    "ip": "10.30.17.150",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-metrics-dev-01",
+    "ip": "10.30.17.150",
+    "env": "dev",
+    "team": null,
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "f951bccc92",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-routing-stg-01",
+    "ip": "10.20.189.170",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-routing-stg-01",
+    "ip": "10.20.92.46",
+    "env": "stg",
+    "team": "sre-core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "0ae383e05d",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-reports-prod-01",
+    "ip": null,
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-metrics-prod-01",
+    "ip": "10.10.109.98",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "6467b92c02",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.92.46:9100",
+    "ip": "10.20.92.46",
+    "env": "stg",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-routing-stg-01",
+    "ip": "10.20.92.46",
+    "env": "stg",
+    "team": "sre-core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "3014852e88",
+   "A": {
+    "source": "cmdb",
+    "name": "vm-sessions-prod-2",
+    "ip": "10.10.223.228",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-sessions-prod-02",
+    "ip": "10.10.126.116",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "9bc9724a5e",
+   "A": {
+    "source": "monitor",
+    "name": "vm-ingest-prod-03.prod.internal",
+    "ip": "10.10.153.136",
+    "env": "prod",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM-INGEST-PROD-3",
+    "ip": "10.10.56.40",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "dc7ab6f6b3",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-search-prod-02",
+    "ip": "10.10.120.250",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-search-prod-02",
+    "ip": "10.10.23.71",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "02d5c8a00c",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk-search-prod-02",
+    "ip": "10.10.120.250",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "kfk-search-prod-02.prod.internal",
+    "ip": "10.10.23.71",
+    "env": "prod",
+    "team": "sre",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "527685075d",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.24.39:9100",
+    "ip": "10.10.24.39",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-warehouse-prod-02",
+    "ip": "10.10.24.39",
+    "env": "prod",
+    "team": "observability",
+    "kind": "kafka",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "541fb4db84",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk_sessions_prod_01",
+    "ip": "10.10.194.49",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "kafka",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-sessions-prod-01",
+    "ip": "10.10.97.18",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "0866a9ce42",
+   "A": {
+    "source": "cmdb",
+    "name": "vm-ledgre-stg-01",
+    "ip": "10.20.211.62",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "vm-ledger-stg-01.stg.internal",
+    "ip": "10.20.114.135",
+    "env": "stg",
+    "team": "sre",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "e28ce20f0f",
+   "A": {
+    "source": "monitor",
+    "name": "10.30.54.81:9100",
+    "ip": "10.30.54.81",
+    "env": "dev",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-notify-dev-02",
+    "ip": "10.30.54.81",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "99f2796fe4",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.188.35:9100",
+    "ip": "10.10.188.35",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-events-prod-01",
+    "ip": "10.10.188.35",
+    "env": "production",
+    "team": "Data Platform",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "45ecb7d23e",
+   "A": {
+    "source": "cmdb",
+    "name": "PG-PRICING-PROD-01",
+    "ip": "10.10.157.102",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "postgres",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-pricing-prod-01.prod.internal",
+    "ip": "10.10.60.34",
+    "env": "prod",
+    "team": "search",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "29959ff26c",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.29.76:9100",
+    "ip": "10.20.29.76",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "PG-AUDIT-STG-1",
+    "ip": "10.20.29.76",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "634a73bbcb",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.29.76:9100",
+    "ip": "10.20.29.76",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-audit-stg-01",
+    "ip": "10.20.29.76",
+    "env": "stg",
+    "team": "observability",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "2223e22fa5",
+   "A": {
+    "source": "monitor",
+    "name": "vm-ledger-prod-04.prod.internal",
+    "ip": "10.10.84.177",
+    "env": "prod",
+    "team": "pay",
+    "kind": null,
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM-LEDGER-PROD-04",
+    "ip": "10.10.181.240",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "2d6a19b627",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s_billing_prod_02",
+    "ip": "10.10.175.158",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-billing-prod-02",
+    "ip": "10.10.78.59",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "651b2a5ebe",
+   "A": {
+    "source": "monitor",
+    "name": "vm-audit-prod-04.prod.internal",
+    "ip": "10.10.183.30",
+    "env": "prod",
+    "team": "sre",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM-AUDIT-PROD-4",
+    "ip": "10.10.86.148",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "7ca574f7ee",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-catalog-prod-04",
+    "ip": "10.10.67.168",
+    "env": "prod",
+    "team": "data-platform",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.67.168:9100",
+    "ip": "10.10.67.168",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "0b7e8b66e8",
+   "A": {
+    "source": "monitor",
+    "name": "10.30.46.20:9100",
+    "ip": "10.30.46.20",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM_LEDGER_DEV_01",
+    "ip": "10.30.46.20",
+    "env": "development",
+    "team": "Observability",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "aa6a0daf37",
+   "A": {
+    "source": "monitor",
+    "name": "pg-auth-prod-01.prod.internal",
+    "ip": "10.10.147.125",
+    "env": "prod",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg_audit_prod_01",
+    "ip": "10.10.53.145",
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "6caac26279",
+   "A": {
+    "source": "monitor",
+    "name": "pg-auth-prod-01.prod.internal",
+    "ip": "10.10.147.125",
+    "env": "prod",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-audit-prod-01",
+    "ip": "10.10.53.145",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "19a9992966",
+   "A": {
+    "source": "monitor",
+    "name": "pg-auth-prod-01.prod.internal",
+    "ip": "10.10.147.125",
+    "env": "prod",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-auht-prod-01",
+    "ip": "10.10.244.167",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "6d077348a8",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-search-prod-01",
+    "ip": "10.10.23.70",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.23.70:9100",
+    "ip": "10.10.23.70",
+    "env": "prod",
+    "team": "sre",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "e9860b5bcf",
+   "A": {
+    "source": "cloud",
+    "name": "pg-orders-stg-01",
+    "ip": "10.20.21.100",
+    "env": "stg",
+    "team": "sre-core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-orders-stg-01",
+    "ip": null,
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "77ce9da931",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-events-prod-03",
+    "ip": "10.10.7.160",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "KFK_EVENTS_PROD_03",
+    "ip": "10.10.104.31",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "kafka",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "caae4a939c",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-audit-prod-1",
+    "ip": "10.10.243.183",
+    "env": "production",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-audit-prod-01",
+    "ip": "10.10.146.130",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "c5f0d29c04",
+   "A": {
+    "source": "cmdb",
+    "name": "ora-ingest-dev-01",
+    "ip": "10.30.113.14",
+    "env": "development",
+    "team": null,
+    "kind": "oracle",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-ingest-dev-01",
+    "ip": "10.30.16.81",
+    "env": "dev",
+    "team": "observability",
+    "kind": "oracle",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "41dfc91a58",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-metrics-dev-02",
+    "ip": "10.30.64.112",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.64.112:9100",
+    "ip": "10.30.64.112",
+    "env": "dev",
+    "team": "sre",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "c7842be461",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-search-dev-01",
+    "ip": "10.30.39.170",
+    "env": "dev",
+    "team": "data-platform",
+    "kind": "k8s-node",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-search-dev-01.dev.internal",
+    "ip": "10.30.136.28",
+    "env": "dev",
+    "team": null,
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "8ca20e2e91",
+   "A": {
+    "source": "monitor",
+    "name": "pg-auth-dev-02.dev.internal",
+    "ip": "10.30.88.120",
+    "env": "dev",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-auth-dev-2",
+    "ip": "10.30.185.193",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "fa240e9708",
+   "A": {
+    "source": "cmdb",
+    "name": "pg_pricing_prod_02",
+    "ip": "10.10.157.223",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-pricing-prod-02.prod.internal",
+    "ip": "10.10.60.35",
+    "env": "prod",
+    "team": "search",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "7aacfe065d",
+   "A": {
+    "source": "cmdb",
+    "name": "pg_pricing_prod_02",
+    "ip": "10.10.157.223",
+    "env": "production",
+    "team": "Search Infrastructure",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-pricing-prod-02",
+    "ip": "10.10.60.35",
+    "env": "prod",
+    "team": "search-infra",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "c695fe3c9a",
+   "A": {
+    "source": "monitor",
+    "name": "pg-events-dev-01.dev.internal",
+    "ip": "10.30.130.50",
+    "env": "dev",
+    "team": "pay",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg_events_dev_01",
+    "ip": "10.30.227.181",
+    "env": "development",
+    "team": "Payments Engineering",
+    "kind": "postgres",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "8871d2a6e1",
+   "A": {
+    "source": "monitor",
+    "name": "vm-pricing-stg-01.stg.internal",
+    "ip": "10.20.200.130",
+    "env": "stg",
+    "team": "search",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "vm-pricing-stg-01",
+    "ip": "10.20.103.154",
+    "env": "stg",
+    "team": null,
+    "kind": "vm",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "8c92bf7282",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-ledger-prod-01",
+    "ip": "10.10.44.17",
+    "env": "prod",
+    "team": "data-platform",
+    "kind": "k8s-node",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-ledger-prod-01.prod.internal",
+    "ip": "10.10.141.12",
+    "env": "prod",
+    "team": "dataplat",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "dccc907e28",
+   "A": {
+    "source": "monitor",
+    "name": "k8s-metrics-prod-02.prod.internal",
+    "ip": "10.10.105.102",
+    "env": "prod",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "k8s-metrics-prod-02",
+    "ip": "10.10.8.156",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "7c8081240d",
+   "A": {
+    "source": "cloud",
+    "name": "pg-metrics-dev-01",
+    "ip": "10.30.17.150",
+    "env": "dev",
+    "team": null,
+    "kind": "postgres",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg_metrics_dev_1",
+    "ip": null,
+    "env": "development",
+    "team": "Observability",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "78d9d52056",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-events-prod-01",
+    "ip": "10.10.7.158",
+    "env": "prod",
+    "team": "search-infra",
+    "kind": "kafka",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.7.158:9100",
+    "ip": "10.10.7.158",
+    "env": "prod",
+    "team": "search",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "5d3537c5a8",
+   "A": {
+    "source": "cloud",
+    "name": "pg-catalog-prod-02",
+    "ip": "10.10.37.123",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "pg-catalog-prod-02.prod.internal",
+    "ip": "10.10.134.75",
+    "env": "prod",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "1b09f62048",
+   "A": {
+    "source": "cloud",
+    "name": "pg-reports-stg-02",
+    "ip": "10.20.135.161",
+    "env": "stg",
+    "team": "observability",
+    "kind": "postgres",
+    "region": "us-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-reports-stg-2",
+    "ip": "10.20.232.29",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "postgres",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "ee7a9cb113",
+   "A": {
+    "source": "cloud",
+    "name": "pg-auth-dev-02",
+    "ip": "10.30.88.120",
+    "env": "dev",
+    "team": null,
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-auth-dev-2",
+    "ip": "10.30.185.193",
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "ae3e9b80d5",
+   "A": {
+    "source": "cloud",
+    "name": "vm-ingest-prod-02",
+    "ip": "10.10.56.39",
+    "env": "prod",
+    "team": "payments-eng",
+    "kind": "vm",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm-ingest-prod-2",
+    "ip": null,
+    "env": "production",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "6e629e0dfd",
+   "A": {
+    "source": "cloud",
+    "name": "kfk-warehouse-prod-01",
+    "ip": "10.10.24.38",
+    "env": "prod",
+    "team": null,
+    "kind": "kafka",
+    "region": "eu-west-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.24.38:9100",
+    "ip": "10.10.24.38",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "kafka",
+    "region": null
+   }
+  },
+  {
+   "id": "2d2d124b01",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-invoices-dev-1",
+    "ip": "10.30.41.120",
+    "env": "development",
+    "team": "Observability",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.41.120:9100",
+    "ip": "10.30.41.120",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "e393d99006",
+   "A": {
+    "source": "cloud",
+    "name": "vm-metrics-prod-02",
+    "ip": "10.10.132.170",
+    "env": "prod",
+    "team": "observability",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm-metrics-prod-02",
+    "ip": "10.10.229.167",
+    "env": "production",
+    "team": null,
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "5598af5290",
+   "A": {
+    "source": "cloud",
+    "name": "vm-metrics-prod-02",
+    "ip": "10.10.132.170",
+    "env": "prod",
+    "team": "observability",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.132.170:9100",
+    "ip": "10.10.132.170",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "6227df3ed3",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-invoices-dev-01",
+    "ip": "10.30.41.120",
+    "env": "dev",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.30.41.120:9100",
+    "ip": "10.30.41.120",
+    "env": "dev",
+    "team": "o11y",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "6229334034",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.57.47:9100",
+    "ip": "10.20.57.47",
+    "env": "stg",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-events-stg-04",
+    "ip": "10.20.57.47",
+    "env": "stg",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "7e50761fe2",
+   "A": {
+    "source": "monitor",
+    "name": "10.20.57.47:9100",
+    "ip": "10.20.57.47",
+    "env": "stg",
+    "team": "sre",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "ora-events-stg-4",
+    "ip": "10.20.57.47",
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "oracle",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "7c9821ef0b",
+   "A": {
+    "source": "monitor",
+    "name": "pg-orders-stg-01.stg.internal",
+    "ip": "10.20.21.100",
+    "env": "stg",
+    "team": "sre",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "pg-orders-stg-01",
+    "ip": null,
+    "env": "staging",
+    "team": "SRE Core",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "b7b7ab2b8b",
+   "A": {
+    "source": "cmdb",
+    "name": "pg-events-prod-01",
+    "ip": "10.10.188.35",
+    "env": "production",
+    "team": "Data Platform",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "pg-events-prod-01",
+    "ip": "10.10.91.71",
+    "env": "prod",
+    "team": "data-platform",
+    "kind": "postgres",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "b862401694",
+   "A": {
+    "source": "cmdb",
+    "name": "ORA-INVOICES-DEV-01",
+    "ip": null,
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "monitor",
+    "name": "ora-invoices-dev-01.dev.internal",
+    "ip": "10.30.90.94",
+    "env": "dev",
+    "team": "dataplat",
+    "kind": null,
+    "region": null
+   }
+  },
+  {
+   "id": "ef3d1c0503",
+   "A": {
+    "source": "monitor",
+    "name": "10.10.52.123:9100",
+    "ip": "10.10.52.123",
+    "env": "prod",
+    "team": null,
+    "kind": "oracle",
+    "region": null
+   },
+   "B": {
+    "source": "cloud",
+    "name": "ora-events-prod-01",
+    "ip": "10.10.52.123",
+    "env": "prod",
+    "team": "sre-core",
+    "kind": "oracle",
+    "region": "us-east-1"
+   }
+  },
+  {
+   "id": "df60b6c177",
+   "A": {
+    "source": "monitor",
+    "name": "vm-reports-stg-01.stg.internal",
+    "ip": "10.20.25.126",
+    "env": "stg",
+    "team": "pay",
+    "kind": "vm",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "VM-REPORTS-STG-01",
+    "ip": "10.20.122.87",
+    "env": "staging",
+    "team": "Payments Engineering",
+    "kind": "vm",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "a05d7533e3",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-notify-dev-01",
+    "ip": "10.30.54.80",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "k8s-notify-dev-01",
+    "ip": null,
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "c90fb6fb22",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-notify-dev-01",
+    "ip": "10.30.54.80",
+    "env": "dev",
+    "team": "sre-core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-notify-dev-01.dev.internal",
+    "ip": "10.30.151.129",
+    "env": "dev",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "faf32f19d1",
+   "A": {
+    "source": "cmdb",
+    "name": "k8s-notify-dev-01",
+    "ip": null,
+    "env": "development",
+    "team": "SRE Core",
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "k8s-notify-dev-01.dev.internal",
+    "ip": "10.30.151.129",
+    "env": "dev",
+    "team": "sre",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "fdead5b306",
+   "A": {
+    "source": "cmdb",
+    "name": "kfk_ledger_dev_02",
+    "ip": "10.30.191.159",
+    "env": "development",
+    "team": "Data Platform",
+    "kind": "kafka",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cloud",
+    "name": "kfk-ledger-dev-02",
+    "ip": "10.30.94.188",
+    "env": "dev",
+    "team": "data-platform",
+    "kind": "kafka",
+    "region": "sa-east-1"
+   }
+  },
+  {
+   "id": "0bffc21fe3",
+   "A": {
+    "source": "monitor",
+    "name": "pg-reports-stg-03.stg.internal",
+    "ip": "10.20.232.82",
+    "env": "stg",
+    "team": "o11y",
+    "kind": "postgres",
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "PG-REPORTS-STG-03",
+    "ip": "10.20.135.162",
+    "env": "staging",
+    "team": "Observability",
+    "kind": "postgres",
+    "region": null
+   }
+  },
+  {
+   "id": "04b4dcc504",
+   "A": {
+    "source": "monitor",
+    "name": "vm-audit-prod-01.prod.internal",
+    "ip": "10.10.86.145",
+    "env": "prod",
+    "team": "sre",
+    "kind": null,
+    "region": null
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "vm_auth_prod_01",
+    "ip": "10.10.137.101",
+    "env": "production",
+    "team": "Observability",
+    "kind": "vm",
+    "region": "eu-west-1"
+   }
+  },
+  {
+   "id": "8e1cdd2f91",
+   "A": {
+    "source": "cloud",
+    "name": "vm-metrics-prod-03",
+    "ip": "10.10.132.171",
+    "env": "prod",
+    "team": "observability",
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.132.171:9100",
+    "ip": "10.10.132.171",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   }
+  },
+  {
+   "id": "927a2d5f25",
+   "A": {
+    "source": "cloud",
+    "name": "k8s-billing-dev-02",
+    "ip": "10.30.74.76",
+    "env": "dev",
+    "team": null,
+    "kind": "k8s-node",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "cmdb",
+    "name": "K8S-BILLING-DEV-2",
+    "ip": "10.30.171.213",
+    "env": "development",
+    "team": "Search Infrastructure",
+    "kind": "k8s-node",
+    "region": null
+   }
+  },
+  {
+   "id": "d48782f69f",
+   "A": {
+    "source": "cmdb",
+    "name": "vm_metrics_rpod_03",
+    "ip": "10.10.132.171",
+    "env": "production",
+    "team": null,
+    "kind": "vm",
+    "region": "sa-east-1"
+   },
+   "B": {
+    "source": "monitor",
+    "name": "10.10.132.171:9100",
+    "ip": "10.10.132.171",
+    "env": "prod",
+    "team": "o11y",
+    "kind": "vm",
+    "region": null
+   }
+  }
+ ]
+}
